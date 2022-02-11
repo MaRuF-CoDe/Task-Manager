@@ -78,7 +78,19 @@ app.patch('/users/:id', async (req, res) => {
 })
 
 
+//Delete User
 
+app.delete('/users/:id', async(req,res)=>{
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+        if (!user) {
+            res.status(404).send()
+        }
+        res.send(user)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
 
 
 //Create Tasks
@@ -150,6 +162,19 @@ app.patch('/tasks/:id', async (req, res) => {
 
 
 
+//Delete Task
+
+app.delete('/tasks/:id', async(req,res)=>{
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id)
+        if (!task) {
+            res.status(404).send()
+        }
+        res.send(task)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
 
 
 app.listen(port, () => {
