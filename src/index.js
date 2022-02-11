@@ -10,6 +10,8 @@ const port = process.env.PORT || 3000
 
 app.use(express.json())
 
+//Create Users
+
 app.post('/users', async (req, res) => {
     const user = new User(req.body)
     try {
@@ -21,6 +23,8 @@ app.post('/users', async (req, res) => {
 })
 
 
+//Read Users
+
 app.get('/users', async (req, res) => {
     try {
         const users = await User.find({})
@@ -29,6 +33,9 @@ app.get('/users', async (req, res) => {
         res.status(500).send()
     }
 })
+
+
+//Read Users By Id
 
 app.get('/users/:id', async (req, res) => {
 
@@ -45,6 +52,37 @@ app.get('/users/:id', async (req, res) => {
 })
 
 
+//Update User
+
+
+app.patch('/users/:id', async (req, res) => {
+
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['name', 'age', 'email', 'password']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates' })
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+
+        if (!user) {
+            return res.status(404).send()
+        }
+        res.send(user)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+
+
+
+
+//Create Tasks
+
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body)
     try {
@@ -56,6 +94,8 @@ app.post('/tasks', async (req, res) => {
 })
 
 
+//Read Tasks
+
 app.get('/tasks', async (req, res) => {
 
     try {
@@ -66,7 +106,9 @@ app.get('/tasks', async (req, res) => {
     }
 })
 
-app.get('/task/:id', async (req, res) => {
+//Read Tasks By Id
+
+app.get('/tasks/:id', async (req, res) => {
 
     const _id = req.params.id
     try {
@@ -79,6 +121,35 @@ app.get('/task/:id', async (req, res) => {
         res.status(500).send()
     }
 })
+
+
+//Update Task
+
+
+app.patch('/tasks/:id', async (req, res) => {
+
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['description','completed']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates' })
+    }
+
+
+    try {
+        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true , runValidators : true})
+        if (!task) {
+            res.status(404).send()
+        }
+        res.send(task)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+
+
 
 
 app.listen(port, () => {
