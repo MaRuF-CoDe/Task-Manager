@@ -6,6 +6,8 @@ const taskRouter = require('./routers/task')
 const app = express()
 const port = process.env.PORT || 3000
 
+
+
 // app.use((req,res,next)=>{
 //     if(req.method === 'GET'){
 //         res.send('GET request are disabled')
@@ -18,24 +20,25 @@ const port = process.env.PORT || 3000
 //     res.status(503).send('Site is currently under maintanence')
 // })
 
+//multer understanding
 
-const multer = require('multer')
-const upload = multer({
-    dest: 'images',
-    limits : {
-        fileSize : 1000000
-    },
-    fileFilter(req,file,cb){
+// const multer = require('multer')
+// const upload = multer({
+//     dest: 'images',
+//     limits : {
+//         fileSize : 1000000
+//     },
+//     fileFilter(req,file,cb){
         
-        if(!file.originalname.match(/\.(doc|docx)$/)){
-            return cb (new Error('Please upload a word document'))
-        }
-        cb(undefined,true)
-    }
-})
-app.post('/upload', upload.single('upload'), (req, res) => {
-    res.send()
-})
+//         if(!file.originalname.match(/\.(doc|docx)$/)){
+//             return cb (new Error('Please upload a word document'))
+//         }
+//         cb(undefined,true)
+//     }
+// })
+// app.post('/upload', upload.single('upload'), (req, res) => {
+//     res.send()
+// })
 
 app.use(express.json())
 app.use(userRouter)
