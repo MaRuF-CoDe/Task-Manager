@@ -18,6 +18,15 @@ const port = process.env.PORT || 3000
 //     res.status(503).send('Site is currently under maintanence')
 // })
 
+
+// const multer = require('multer')
+// const upload = multer({
+//     dest: 'images'
+// })
+// app.post('/upload', upload.single('upload'), (req, res) => {
+//     res.send()
+// })
+
 app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
